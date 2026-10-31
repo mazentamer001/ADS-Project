@@ -11,11 +11,11 @@ class Gatehashset
     std:: size_t capacity; 
   
      std:: size_t num_elements;
-    constexpr static  float MAX_LOAD_FACTOR = 0.75f;
+    constexpr static  float MAX_LOAD_FACTOR = 0.75f; // load factor  to  ensure  O(1) complexity 
   
         //fibo hashfunction
    std::size_t hash_function(Gate* gate, std::size_t table_capacity) const {
-       // casting ptr into  same  format  integer
+       // casting ptr into  same  format bit  integer
     std::size_t addr = reinterpret_cast<std::size_t>(gate);
         return ((addr >> 4) * 11400714819323198485ULL) % table_capacity;
     }
@@ -24,7 +24,7 @@ class Gatehashset
     std::size_t hash_function(Gate* gate) const {
         return hash_function(gate, capacity);
     }
-    
+    // in case of going  over  the load factor
     void rehash(std :: size_t new_capacity){
           vector<vector<Gate>> new_table(new_capacity);
           for(const auto&container:table){
@@ -74,7 +74,7 @@ class Gatehashset
     }
     void clear() {
         for (auto& bucket : table) {
-            bucket.clear(); // Clears elements, retains memory capacity
+            bucket.clear(); // Clears elements, yet retains memory capacity
         }
         num_elements = 0;
     }
