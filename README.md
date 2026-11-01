@@ -80,7 +80,19 @@ Why a circular array: Reuses available positions and avoids shifting elements af
 ### 5. Hash Map
 
 
-### 6. Priority Queue
+### 6. Priority Queue (`EventQueue`)
+
+The event queue for event-driven simulation. Each event says "at time t, net n changes to value v", and the simulator always takes the earliest event next.
+
+- **Implementation:** binary min-heap stored in a dynamic array. `heap[0]` is always the earliest event; the parent of `i` is `(i-1)/2` and its children are `2i+1` and `2i+2`. The array starts at 16 and doubles when full.
+- **Operations:** `push`, `pop`, `peek`, `nextTime`, `isEmpty`, `size`, `clear`
+- **Complexity:** `push` O(log k); `pop` O(log k); `peek`, `nextTime`, `isEmpty`, `size`, `clear` O(1); space O(k). A full simulation with k events is O(k log k).
+- **FIFO among equal times:** a heap is not stable on its own, so every event gets a `seq` number in the order it was pushed. Events are compared by time first, and by `seq` when times are equal.
+- **Why a heap:** a sorted list would make every insert O(n). The heap gives O(log k) for both insert and removal.
+- **Values:** `val` is a `char` (`'0'`, `'1'`, `'X'`, `'Z'`) so the queue already supports four-valued logic.
+- **Empty queue:** `pop` and `peek` print an error and return an event with `time = -1` instead of crashing.
+
+**Use in the project:** the simulator pops the earliest event, updates that net's value, walks the driving gate's fanout in the graph, and pushes a new event at `time + delay` for each receiving gate whose output changes. `netId` is the gate id the hash map returns for a net name. The hash set stops the same gate from being scheduled twice in one time step. Clock edges for flip-flops are also pushed as events.
 
 
 ### 7. Directed Graph (adjacency list)
@@ -102,6 +114,7 @@ DynArray.hpp     Vector
 Graph.hpp        Directed graph: declarations and usage comments
 Graph.cpp        Directed graph: implementation
 Hashset.h        Hash Set
+EventQueue.h     Priority queue (event queue)
 ```
 
 ## Milestones
