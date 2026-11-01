@@ -41,8 +41,37 @@ A resizable array stored in one contiguous block of memory that grows when it be
 
 ### 2. Stack
 
+Implementation: Dynamic array , with a top index tracking the top element.
+
+
+
+Operations: push, pop, top, isEmpty, size.
+
+
+
+Complexity: push O(1) amortized; pop O(1); top O(1); space O(n).
+
+
+
+Why an array: Provides contiguous memory, efficient access, and amortized constant-time insertion.
+
 
 ### 3. Queue
+
+Implementation: Circular dynamic array, with front, rear, and count tracking the elements.
+
+
+
+Operations: enqueue, dequeue, front, isEmpty, size.
+
+
+
+Complexity: enqueue O(1) amortized; dequeue O(1); front O(1); space O(n).
+
+
+
+Why a circular array: Reuses available positions and avoids shifting elements after every dequeue.
+
 
 
 ### 4. Hash Set
