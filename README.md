@@ -16,7 +16,7 @@ A simulator for digital circuits described as a netlist (AND, OR, NOT, XOR, NAND
 | _TBD_ | | Queue |
 | _TBD_ | | Hash Set |
 | _TBD_ | | Hash Map |
-| _TBD_ | | Priority Queue |
+| Yousuf Iraky | 900251079 | Priority Queue |
 
 ## Data Structures
 
@@ -28,7 +28,7 @@ A simulator for digital circuits described as a netlist (AND, OR, NOT, XOR, NAND
 | Queue | Kahn's algorithm (levelization) | _TBD_ |
 | Hash Set | Gates already scheduled in the current time step | _TBD_ |
 | Hash Map | Net name to gate id | _TBD_ |
-| Priority Queue | Event queue ordered by time, FIFO among equal times | _TBD_ |
+| Priority Queue | Event queue ordered by time, FIFO among equal times | Done |
 
 ### 1. Vector (`DynArray<T>`)
 
