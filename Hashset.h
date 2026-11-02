@@ -81,11 +81,17 @@ class Gatehashset
     
     std :: size_t size() const { return num_elements; }
     std :: size_t get_capacity() const { return capacity; }
-    bool empty() const { return num_elements == 0; }
     float load_factor() const { return static_cast<float>(num_elements) / capacity; }
 
 
-
+/*void swap(DynArray& other) {
+    T* tmp_data = data_; data_ = other.data_; other.data_ = tmp_data;
+    int tmp_sz = size_; size_ = other.size_; other.size_ = tmp_sz;
+    int tmp_cp = cap_; cap_ = other.cap_; other.cap_ = tmp_cp;
+}
+void pop_back() { if (size_ > 0) size_--; }
+void clear() { size_ = 0; }
+*/
 
 
 
