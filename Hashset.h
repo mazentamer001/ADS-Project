@@ -7,7 +7,7 @@ struct Gate;
 class Gatehashset
 {
     private :
-    std:: vector< std:: vector<Gate>> table;
+   DynArray<DynArray<Gate*>> table;
     std:: size_t capacity; 
   
      std:: size_t num_elements;
@@ -24,37 +24,49 @@ class Gatehashset
     std::size_t hash_function(Gate* gate) const {
         return hash_function(gate, capacity);
     }
-    // in case of going  over  the load factor
+    // in case of exceeding he load factor
     void rehash(std :: size_t new_capacity){
-          vector<vector<Gate>> new_table(new_capacity);
-          for(const auto&container:table){
-          for(Gate* gate: container){
-            size_t new_index=hash_function(gate, new_capacity);
-            new_table[new_index].push_back(gate);
-          }
+         DynArray<DynArray<Gate*>> new_table;
+        for (std::size_t i = 0; i < new_capacity; ++i) {
+            new_table.push_back(DynArray<Gate*>());
+        }
 
-          }
-          table.swap(new_table);
+        for (int i = 0; i < table.size(); ++i) {
+            const auto& bucket = table[i];
+            for (int j = 0; j < bucket.size(); ++j) {
+                Gate* gate = bucket[j];
+                std::size_t new_index = hash_function(gate, new_capacity);
+                new_table[static_cast<int>(new_index)].push_back(gate);
+            }
+        }
+
+        table = new_table; 
         capacity = new_capacity;
     }
     public:
-    Gatehashset(std :: size_t initial_capacity = 101):capacity( initial_capacity),num_elements(0) 
-        table.resize(capacity);{}
+   explicit GateHashSet(std::size_t initial_capacity = 101) 
+        : capacity(initial_capacity), num_elements(0) {
+        for (std::size_t i = 0; i < capacity; ++i) {
+            table.push_back(DynArray<Gate*>());
+        }
+    }
    
         bool contains(Gate *gate ){
          if (!gate)return false;
          std::size_t index = hash_function(gate);
-         for(Gate *item :table[index]){
-            if (item == gate) return true;
-         }
-         return true 
+       const auto& bucket = table[static_cast<int>(index)];
+
+        for (int i = 0; i < bucket.size(); ++i) {
+            if (bucket[i] == gate) return true;
         }
+        return false;
+    }
     bool insert(Gate *gate ){
         if(!gate||contains(gate))return false;
         if (static_cast<float>(num_elements + 1) / capacity > MAX_LOAD_FACTOR) {
             rehash(capacity * 2 + 1);
            std:: size_t index=hash_function(gate);
-           table[index].push_back(gate);
+           table[static_cast<int>(index)].push_back(gate);
             num_elements++
             return true;
         }
@@ -62,21 +74,28 @@ class Gatehashset
     }
     bool remove(Gate*gate ){
         if(!gate||!contains(gate))return false;
-        std:: size_t index=hash_function(gate);
-        for (auto it = container.begin(); it != container.end(); ++it) {
-            if (*it == gate) {
-                bucket.erase(it);
-                num_elements--;
-                return true;
+       auto& bucket = table[static_cast<int>(index)];
+
+        int target_idx = -1;
+        for (int i = 0; i < bucket.size(); ++i) {
+            if (bucket[i] == gate) {
+                target_idx = i;
+                break;
             }
         }
-        return false 
-    }
-    void clear() {
-        for (auto& bucket : table) {
-            bucket.clear(); // Clears elements, yet retains memory capacity
+
+        if (target_idx == -1) return false;
+
+        DynArray<Gate*> new_bucket;
+        for (int i = 0; i < bucket.size(); ++i) {
+            if (i != target_idx) {
+                new_bucket.push_back(bucket[i]);
+            }
         }
-        num_elements = 0;
+
+        bucket = new_bucket;
+        num_elements--;
+        return true;
     }
     
     std :: size_t size() const { return num_elements; }
