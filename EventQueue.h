@@ -166,6 +166,10 @@ public:
     }
 };
 
+//design decisions:
+//used a heap and not a sorted list cause inserting in a sorted list is O(n), the heap does push and pop in O(log k)
+//a heap alone doesnt keep equal times in order, so seq is used to break the ties and get fifo
+//the array doubles when full since we dont know how many events a circuit will make
 
 //complexity:
 //push O(log k), pop O(log k)
