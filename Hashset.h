@@ -1,4 +1,5 @@
 #pragma once
+#include "DynArray"
 #include <cstddef>
 
 struct Gate;
