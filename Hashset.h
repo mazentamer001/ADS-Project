@@ -4,7 +4,12 @@
 
 struct Gate;
 
-
+/*
+This  class  is  an active gate deduplication mechanism.
+In case  of  gate  drivers vlaue change(wire_1 = 0 -> wire_1 = 1)
+flags  are then   sent  for  gate  revluation
+this  calss  ensures  no  duplicate  gate  reevauluation.
+*/
 class Gatehashset
 {
     private :
@@ -25,7 +30,7 @@ class Gatehashset
     std::size_t hash_function(Gate* gate) const {
         return hash_function(gate, capacity);
     }
-    // in case of exceeding he load factor
+    // in case of exceeding the load factor
     void rehash(std :: size_t new_capacity){
          DynArray<DynArray<Gate*>> new_table;
         for (std::size_t i = 0; i < new_capacity; ++i) {
@@ -75,6 +80,7 @@ class Gatehashset
     }
     bool remove(Gate*gate ){
         if(!gate||!contains(gate))return false;
+        std::size_t index = hash_function(gate);
        auto& bucket = table[static_cast<int>(index)];
 
         int target_idx = -1;
