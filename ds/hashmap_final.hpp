@@ -15,7 +15,7 @@ const unsigned int FNV_PRIME = 16777619u;
 
 //returns true if both strings are identical. Needed because different names can land in the same bucket, so after the hash picks
 //the bucket we still compare names to find the exact key. Cost: O(n) depending on the length of the string.
-bool check_samename(const char* a, const char* b)
+inline bool check_samename(const char* a, const char* b)
 {
     while (*a != '\0' && *a == *b)   //stop at the end of either string or at the first different letter
     {
@@ -27,7 +27,7 @@ bool check_samename(const char* a, const char* b)
 
 //makes a new copy of a string so each node owns its key (the caller's buffer can change or disappear later).
 //the caller must delete[] the copy (the Node destructor does it). Cost: O(n) depending on the length of the string.
-char* copy_name(const char* s)
+inline char* copy_name(const char* s)
 {
     int n = 0;
     while (s[n] != '\0')   //count the letters before the '\0'
@@ -44,7 +44,7 @@ char* copy_name(const char* s)
 
 //turns a string into a number (FNV-1a hash): the same string always gives the same number and similar names give very different
 //numbers.
-unsigned int hashingfunction(const char* s)
+inline unsigned int hashingfunction(const char* s)
 {
     unsigned int h = FNV_OFFSET;
     while (*s != '\0')

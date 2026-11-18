@@ -1,8 +1,6 @@
 #ifndef EVENTQUEUE_H
 #define EVENTQUEUE_H
-
 #include <iostream>
-using namespace std;
 
 //its a min heap on an array so the event with the smallest time is always at the top, if two events have the same time, the one pushed first comes out first
 
@@ -112,7 +110,7 @@ public:
     //take the top event and put the last one at the top and move it down, on an empty queue it prints an error and returns an event with time -1
     Event pop() {
         if (count == 0) {
-            cout << "error: pop on empty event queue" << endl;
+            std::cout << "error: pop on empty event queue" << std::endl;
             Event bad;
             bad.time = -1;
             bad.seq = -1;
@@ -133,7 +131,7 @@ public:
     //next event without removing it
     Event peek() {
         if (count == 0) {
-            cout << "error: peek on empty event queue" << endl;
+            std::cout << "error: peek on empty event queue" << std::endl;
             Event bad;
             bad.time = -1;
             bad.seq = -1;

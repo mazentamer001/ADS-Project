@@ -1,0 +1,10 @@
+# full_adder.net -- 1-bit full adder (structural description)
+# TYPE  name  delay  inputs...        (the name is the net the gate drives)
+INPUT  a b cin
+OUTPUT sum cout
+
+XOR  x1    2  a  b        # x1   = a XOR b
+XOR  sum   2  x1 cin      # sum  = x1 XOR cin
+AND  a1    1  a  b
+AND  a2    1  x1 cin
+OR   cout  1  a1 a2       # cout = (a AND b) OR (x1 AND cin)

@@ -24,14 +24,16 @@ bool isSequential(GateType t);          //true for state-holding gates (DFF)
 int  numInputPins(GateType t);          //how many input pins the type has
 
 //one wire, example: Wire A -> AND  :  Edge { from = 0, to = 2, pin = 0 }
-struct Edge {
+class Edge {
+ public:
     int from;  //who sends the signal?
     int to;    //who recieves it?
     int pin;   //which input slot on the reciever?
 };
 
 //one node of the graph.
-struct Gate {
+class Gate {
+ public:
     int  id;                    //index of this gate in the graph (to be more exact its the index in the dynamic array inside the graph)
     char name[MAX_NAME_LEN];    //name of the gate
     GateType type;

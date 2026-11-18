@@ -1,0 +1,16 @@
+# full_adder.stim -- all 8 input combinations, 20 time units apart
+# <time> <input> <value>
+0   a 0
+0   b 0
+0   cin 0
+20  cin 1
+40  b 1
+40  cin 0
+60  cin 1
+80  a 1
+80  b 0
+80  cin 0
+100 cin 1
+120 b 1
+120 cin 0
+140 cin 1

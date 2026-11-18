@@ -21,6 +21,12 @@ public:
     void push_back(const T& value);             //Append at the end O(1)
     int  size()  const;                         //returns SIZE of array
     bool empty() const;                         //checks if array is empty i.e. size is zero
+    void pop_back();                       //remove last element, O(1) (does nothing if empty)
+    void clear();                          //size becomes 0, buffer is kept for reuse, O(1)
+    T&       back();                       //last element (array must not be empty)
+    const T& back() const;
+    void reserve(int newCap);              //make room for at least newCap elements, O(n)
+    void resize(int n, T fill = T());      //shrink, or grow and fill new slots with 'fill'
 
     //we have 2 versions const and non const for a[3] = 7 we use non const but for const arrays we use a[3] so we refer to cont
     T& operator[](int i);                 //no bounds checking, for speed (callers must stay within [0, size))
@@ -94,5 +100,42 @@ T& DynArray<T>::operator[](int i) { return data_[i]; }
 
 template <class T>
 const T& DynArray<T>::operator[](int i) const { return data_[i]; }
+
+//drop the last element. The slot stays allocated, so nothing is freed.
+template <class T>
+void DynArray<T>::pop_back() { if (size_ > 0) size_--; }
+
+//forget all elements but keep the buffer, so refilling it needs no new allocation.
+template <class T>
+void DynArray<T>::clear() { size_ = 0; }
+
+template <class T>
+T& DynArray<T>::back() { return data_[size_ - 1]; }
+
+template <class T>
+const T& DynArray<T>::back() const { return data_[size_ - 1]; }
+
+//grow the buffer once up front so later push_backs never reallocate. Never shrinks.
+template <class T>
+void DynArray<T>::reserve(int newCap) {
+    if (newCap <= cap_) return;
+    T* nd = new T[newCap];
+    for (int i = 0; i < size_; i++) nd[i] = data_[i];
+    delete[] data_;
+    data_ = nd;
+    cap_ = newCap;
+}
+
+//make the array exactly n elements long. New slots get a copy of 'fill'.
+//'fill' is taken by value so it stays valid even if it came from this array.
+template <class T>
+void DynArray<T>::resize(int n, T fill) {
+    if (n < 0) n = 0;
+    if (n > size_) {
+        reserve(n);
+        for (int i = size_; i < n; i++) data_[i] = fill;
+    }
+    size_ = n;
+}
 
 #endif
