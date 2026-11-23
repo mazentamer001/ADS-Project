@@ -1,0 +1,43 @@
+# 8-bit ripple-carry adder
+INPUT cin a0 b0 a1 b1 a2 b2 a3 b3 a4 b4 a5 b5 a6 b6 a7 b7
+OUTPUT s0 s1 s2 s3 s4 s5 s6 s7 c8
+XOR p0 1 a0 b0
+XOR s0 1 p0 cin
+AND g0 1 a0 b0
+AND h0 1 p0 cin
+OR c1 1 g0 h0
+XOR p1 1 a1 b1
+XOR s1 1 p1 c1
+AND g1 1 a1 b1
+AND h1 1 p1 c1
+OR c2 1 g1 h1
+XOR p2 1 a2 b2
+XOR s2 1 p2 c2
+AND g2 1 a2 b2
+AND h2 1 p2 c2
+OR c3 1 g2 h2
+XOR p3 1 a3 b3
+XOR s3 1 p3 c3
+AND g3 1 a3 b3
+AND h3 1 p3 c3
+OR c4 1 g3 h3
+XOR p4 1 a4 b4
+XOR s4 1 p4 c4
+AND g4 1 a4 b4
+AND h4 1 p4 c4
+OR c5 1 g4 h4
+XOR p5 1 a5 b5
+XOR s5 1 p5 c5
+AND g5 1 a5 b5
+AND h5 1 p5 c5
+OR c6 1 g5 h5
+XOR p6 1 a6 b6
+XOR s6 1 p6 c6
+AND g6 1 a6 b6
+AND h6 1 p6 c6
+OR c7 1 g6 h6
+XOR p7 1 a7 b7
+XOR s7 1 p7 c7
+AND g7 1 a7 b7
+AND h7 1 p7 c7
+OR c8 1 g7 h7

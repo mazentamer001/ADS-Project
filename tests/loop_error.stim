@@ -1,0 +1,3 @@
+# Input stimulus for loop_error.net; loop detection should fail before simulation.
+0 a 0
+10 a 1

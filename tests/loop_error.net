@@ -1,0 +1,5 @@
+# Deliberate combinational feedback loop: n1 -> n2 -> n1
+INPUT a
+OUTPUT n1
+NOT n1 1 n2
+NOT n2 1 n1

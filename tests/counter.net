@@ -1,0 +1,6 @@
+# 1-bit toggle counter (structural sequential example)
+# DFF pin 0 = D, pin 1 = CLK. Feedback through the DFF is sequential.
+INPUT clk
+OUTPUT q
+DFF q 1 nq clk
+NOT nq 1 q

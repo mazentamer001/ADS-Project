@@ -1,0 +1,7 @@
+8-bit ripple-carry adder expected demo vectors
+Critical path delay from current structural timing model: 17
+A + B + Cin = Cout:Sum (8-bit unsigned result)
+A=0x35 B=0x27 Cin=1 -> Cout=0 Sum=0x5D
+A=0xFF B=0x01 Cin=0 -> Cout=1 Sum=0x00
+A=0xA5 B=0x5A Cin=1 -> Cout=1 Sum=0x00
+A=0x00 B=0x00 Cin=0 -> Cout=0 Sum=0x00

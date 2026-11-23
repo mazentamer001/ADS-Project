@@ -1,0 +1,4 @@
+Structural 1-bit toggle-counter reference
+DFF state is not simulated by the current application.
+For an ideal toggle counter, q alternates 0,1,0,1,... on active clock edges.
+This file is a reference expectation, not a claim that the current simulator produced it.

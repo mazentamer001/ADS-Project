@@ -1,0 +1,7 @@
+ADS-Project demo expected arithmetic outputs
+Bit numbering: a0/b0 are least-significant bits; cout is carry-out.
+All values below are unsigned 8-bit addition: A + B + Cin = Cout:Sum.
+A=0x35 B=0x27 Cin=1 -> Cout=0 Sum=0x5D (01011101)
+A=0xFF B=0x01 Cin=0 -> Cout=1 Sum=0x00 (00000000)
+A=0xA5 B=0x5A Cin=1 -> Cout=1 Sum=0x00 (00000000)
+A=0x00 B=0x00 Cin=0 -> Cout=0 Sum=0x00 (00000000)
