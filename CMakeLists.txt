@@ -4,6 +4,7 @@ project(LogicSim CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)   # static libs get linked into the Qt GUI
 
 # Default to an optimized build (same as -O2 in the old Makefile)
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -38,6 +39,23 @@ target_link_libraries(app_lib PUBLIC ds_lib)
 # ---- Executables ------------------------------------------------------------
 add_executable(sim src/main.cpp)
 target_link_libraries(sim PRIVATE app_lib)
+
+# ---- Qt GUI (optional: skipped automatically if Qt5 is not installed) --------
+find_package(Qt5 COMPONENTS Widgets QUIET)
+if(Qt5_FOUND)
+  add_executable(gui
+    gui/main.cpp
+    gui/MainWindow.cpp   gui/MainWindow.hpp
+    gui/WaveformView.cpp gui/WaveformView.hpp
+    gui/SchematicView.cpp gui/SchematicView.hpp
+    gui/SimRunner.cpp    gui/SimRunner.hpp
+  )
+  set_target_properties(gui PROPERTIES AUTOMOC ON)
+  target_include_directories(gui PRIVATE gui)
+  target_link_libraries(gui PRIVATE app_lib Qt5::Widgets)
+else()
+  message(STATUS "Qt5 Widgets not found: GUI target skipped (sudo apt install qtbase5-dev)")
+endif()
 
 add_executable(test_ds tests/test_ds.cpp)
 target_link_libraries(test_ds PRIVATE app_lib)
