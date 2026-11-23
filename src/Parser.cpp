@@ -6,7 +6,7 @@
 #include <cstring>
 
 // Set to true when flip-flops are implemented in the simulators.
-static const bool ALLOW_SEQUENTIAL = false;
+static const bool ALLOW_SEQUENTIAL = true;
 
 // text -> gate type for the gates that have a name on a gate line
 static bool parseType(const char* s, GateType& t) {
