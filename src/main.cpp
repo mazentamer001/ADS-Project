@@ -34,7 +34,16 @@ static void usage(const char* prog) {
 // Names the gates that are stuck on a combinational loop.
 static void reportLoop(const Graph& g, const TimingAnalyzer& ta) {
 #ifdef HAVE_GRAPHALGOS
-    // TODO(Person 2 merged): call findLoop() and print only the gates ON the cycle.
+
+    DynArray<int> cycle;
+    if (findLoop(g, cycle) && !cycle.empty()) {
+        fprintf(stderr, "error: combinational loop detected:");
+        for (int i = 0; i < cycle.size(); i++) {
+            fprintf(stderr, " %s ->", g.gate(cycle[i]).name);
+        }
+        fprintf(stderr, " %s\n", g.gate(cycle[0]).name);
+        return;
+    }
 #endif
     fprintf(stderr, "error: combinational loop detected. Gates involved or downstream of it:");
     for (int i = 0; i < ta.loopGates().size(); i++)
