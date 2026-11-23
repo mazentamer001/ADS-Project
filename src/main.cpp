@@ -90,10 +90,39 @@ int main(int argc, char** argv) {
     if (vcdFile && !vcd.open(vcdFile, p.g)) return 1;
 
 #ifdef HAVE_SIMS
-    // TODO(Person 3 merged): run LevelizedSim, then EventSim on the same stimulus,
-    // pass vcd.change(time, gate, value) to the event sim (or replay its recorded
-    // changes), and print both gate-evaluation counts side by side:
-    //     Levelized evaluations: N     Event-driven evaluations: M
+    // Person 3: both simulators run on the same stimulus.
+    int endTime = sp.lastTime();
+    if (stimFile) {
+        // levelized: one pass over the topological order per input vector
+        LevelizedSim lev(p.g);
+        lev.run(sp.events, ta.topoOrder());
+        lev.print();
+
+        // event-driven: only affected gates, with delays
+        EventSim ev(p.g);
+        ev.run(sp.events);
+        ev.print();
+
+        // waveform: replay every recorded value change
+        const DynArray<ValueChange>& ch = ev.changes();
+        for (int i = 0; i < ch.size(); i++)
+            vcd.change(ch[i].getTime(), ch[i].getGate(), ch[i].getVal());
+        if (ev.endTime() > endTime) endTime = ev.endTime();
+
+        // both sims must agree once the circuit settles: sample the event-driven
+        // outputs just before the next input vector (or at the very end)
+        int mismatches = 0;
+        for (int v = 0; v < lev.numVectors(); v++) {
+            int t = (v + 1 < lev.numVectors()) ? lev.vectorTime(v + 1) - 1 : ev.endTime();
+            for (int k = 0; k < lev.numOutputs(); k++)
+                if (ev.valueAt(lev.outputGate(k), t) != lev.outputValue(v, k)) mismatches++;
+        }
+        if (mismatches == 0) printf("Results match: both simulators give the same settled outputs\n");
+        else printf("Results differ in %d place(s) (inputs may change before the circuit settles)\n", mismatches);
+
+        printf("Levelized evaluations: %d     Event-driven evaluations: %d\n",
+               lev.evaluations(), ev.evaluations());
+    }
 #else
     if (stimFile) {
         printf("Simulators not built in (compile with -DHAVE_SIMS): replaying inputs only\n");
@@ -101,7 +130,10 @@ int main(int argc, char** argv) {
             vcd.change(sp.events[i].time, sp.events[i].gate, sp.events[i].val);
     }
 #endif
-    if (vcd.isOpen()) { vcd.close(sp.lastTime()); printf("Waveform written to %s\n", vcdFile); }
+#ifndef HAVE_SIMS
+    int endTime = sp.lastTime();
+#endif
+    if (vcd.isOpen()) { vcd.close(endTime); printf("Waveform written to %s\n", vcdFile); }
 
     // 5. timing analysis
     ta.print(p.g);
