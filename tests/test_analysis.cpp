@@ -57,13 +57,13 @@ static void testVcd() {
     int o = g.addGate("a$out", GATE_OUTPUT, 0);
     g.addEdge(a, o, 0);
     VCDWriter w;
-    CHECK(w.open("/tmp/test_analysis.vcd", g));
+    CHECK(w.open("test_analysis.vcd", g));
     w.change(0, a, '0');
     w.change(5, a, '0');    // no change -> ignored
     w.change(10, a, '1');
     w.change(10, o, '1');   // probe is not traced -> ignored
     w.close(20);
-    FILE* f = fopen("/tmp/test_analysis.vcd", "r");
+    FILE* f = fopen("test_analysis.vcd", "r");
     CHECK(f != nullptr);
     char buf[4096] = {0};
     size_t n = f ? fread(buf, 1, sizeof buf - 1, f) : 0;
