@@ -10,16 +10,16 @@ static int failures = 0;
 #define CHECK(expr) do { if (!(expr)) { std::printf("FAIL line %d: %s\n", __LINE__, #expr); ++failures; } } while (0)
 
 static void testEventQueueFifoTieBreak() {
-    EventQueue q;
+    EventQueue q(16);
     q.push(10, 1, '0');
     q.push(5, 2, '1');
     q.push(10, 3, 'X');
     q.push(10, 4, 'Z');
     CHECK(q.size() == 4);
-    CHECK(q.pop().netId == 2); // earliest timestamp first
-    CHECK(q.pop().netId == 1); // FIFO for equal timestamps
-    CHECK(q.pop().netId == 3);
-    CHECK(q.pop().netId == 4);
+    CHECK(q.pop().getNetId() == 2); // earliest timestamp first
+    CHECK(q.pop().getNetId() == 1); // FIFO for equal timestamps
+    CHECK(q.pop().getNetId() == 3);
+    CHECK(q.pop().getNetId() == 4);
     CHECK(q.isEmpty());
 }
 
