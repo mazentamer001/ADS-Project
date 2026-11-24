@@ -1,8 +1,5 @@
 
 // GraphAlgos.hpp -- Milestone 2: Graph algorithms for circuit preprocessing
-//
-// Provides two combinational graph analyses built directly on the custom
-// Graph, DynArray, Queue, and Stack data structures (no STL):
 //   1. levelize() -- Kahn's algorithm using Queue and combInDegree 
 //   2. findLoop() -- Iterative 3-color (White/Gray/Black) DFS using Stack to
 //      locate and return the exact sequence of gates forming a combinational
