@@ -9,13 +9,14 @@ bool levelize(const Graph& g, DynArray<int>& topoOrder, DynArray<int>& levels) {
     const int n = g.numGates();
 
     // Assumes topoOrder and levels are empty when passed in.
-    DynArray<int> indeg;
+    DynArray<int> indeg;  // holds  number  of  gates  of  current gate "id"
+    /// intializing
     for (int i = 0; i < n; i++) {
         levels.push_back(0);
         indeg.push_back(g.combInDegree(i));
     }
 
-    Queue q;
+    Queue q; // ready  to  use  (source  gates)
     for (int i = 0; i < n; i++)
         if (indeg[i] == 0) q.enqueue(i);
 
@@ -27,7 +28,7 @@ bool levelize(const Graph& g, DynArray<int>& topoOrder, DynArray<int>& levels) {
         const Gate& gu = g.gate(u);
         for (int k = 0; k < gu.fanout.size(); k++) {
             int eid = gu.fanout[k];
-            if (!g.isCombinationalEdge(eid)) continue;   // wire into a DFF
+            if (!g.isCombinationalEdge(eid)) continue;   // wire into a DFF (source)
             int v = g.edge(eid).to;
             if (levels[u] + 1 > levels[v]) levels[v] = levels[u] + 1;
             if (--indeg[v] == 0) q.enqueue(v);
