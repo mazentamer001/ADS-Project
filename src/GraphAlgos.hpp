@@ -26,7 +26,7 @@ bool levelize(const Graph& g, DynArray<int>& topoOrder, DynArray<int>& levels);
 
 
 // Outputs:
-//   cycleGates -- cleared, then populated with the gate IDs on the detect 
+//   cycleGates --  populated with the gate IDs on 
 // Returns true if a combinational cycle is found, or false if the circuit is
 
 bool findLoop(const Graph& g, DynArray<int>& cycleGates);
